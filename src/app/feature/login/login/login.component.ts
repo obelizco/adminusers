@@ -12,6 +12,10 @@ import { Persistence } from '@shared/service/Persistence.service';
 })
 export class LoginComponent implements OnInit {
   loginForm: FormGroup;
+  showErrorEmails: boolean = false;
+  showErrorPassword: boolean = false;
+  errorMessageEmail: string ="";
+  errorMessagePassword: string ="";
 
   constructor(
     private readonly _formBuild: FormBuilder,
@@ -25,7 +29,7 @@ export class LoginComponent implements OnInit {
 
   buildForm(): void {
     this.loginForm = this._formBuild.group({
-      email: [null, [Validators.required, Validators.email]],
+      email: [null, [Validators.required]],
       password: [null, [Validators.required, Validators.minLength(8)]],
     });
   }
@@ -40,10 +44,32 @@ export class LoginComponent implements OnInit {
 
   login(): void {
     const payload = this.loginForm.value as ILogin;
-    this._loginService$.login(payload).subscribe((res:any)=>{
-      this._persistenceService$.save('token',res.token);
-      this.redirectUsers();
-    });
+    this.validateEmail();
+    this.validatePassword();
+    if(this.loginForm.valid) {
+      this._loginService$.login(payload).subscribe((res:any)=>{
+        this._persistenceService$.save('token',res.token);
+        this.redirectUsers();
+      });
+    }
+  }
+
+  validateEmail(): void {
+    if(this.getEmail.hasError("required")) {
+      this.showErrorEmails = true;
+      this.errorMessageEmail = 'Email is required';
+    }
+  }
+
+  validatePassword(): void {
+    if(this.getPassword.hasError("required")) {
+      this.showErrorPassword = true;
+      this.errorMessagePassword = 'Password is required';
+    }
+    if(this.getPassword.hasError("minlength")){
+      this.showErrorPassword = true;
+      this.errorMessagePassword = 'The minimun characters will be 8';
+    }
   }
 
   /**

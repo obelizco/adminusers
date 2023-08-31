@@ -6,17 +6,17 @@
 
 <nav class="navbar">
   <div class="navbar-left">
-    <span class="nav-option" (click)="navigateTo('/list')" id="nav-bar__btn-list-user">
+    <a class="nav-option" (click)="navigateTo('/list')" id="nav-bar__btn-list-user">
       <i class="fas fa-home"></i> Usarios
-    </span>
-    <span class="nav-option" (click)="navigateTo('/create')" id="nav-bar__btn-create-user">
+    </a>
+    <a class="nav-option" (click)="navigateTo('/create')" id="nav-bar__btn-create-user">
       <i class="fas fa-user"></i> Crear 
-    </span>
+    </a>
   </div>
   <div class="navbar-right">
-    <span class="logout-option" (click)="logout()" id="nav-bar__btn-logout">
+    <a class="logout-option" (click)="logout()" id="nav-bar__btn-logout">
       <i class="fas fa-sign-out-alt"></i> Cerrar Sesión
-    </span>
+    </a>
   </div>
 </nav>
 <div *ngIf="showAlert.isOpen" class="alert" [ngClass]="showAlert.type" >

@@ -16,32 +16,30 @@
           <input
             id="login__email"
             type="email"
-            [ngClass]="getEmail.hasError('required') && getEmail.touched ? 'white large error' : 'white large '"
+            [ngClass]="showErrorEmails ? 'white large error' : 'white large '"
             placeholder="Ingrese correo"
             formControlName="email"
           />
           <div class="form-hint error-text mt-5" 
           id="login__email-error"
-          *ngIf="getEmail.hasError('required') && getEmail.touched">Email is required</div>
-          <div class="form-hint error-text mt-5" *ngIf="getEmail.hasError('email')">Email Invalid</div>
+          *ngIf="showErrorEmails">{{errorMessageEmail}}</div>
         </section>
         <section class="layout-column align-items-center justify-content-center mb-10">
           <input
             id="login__password"
             type="password"
-            [ngClass]="getPassword.hasError('required') && getPassword.touched ? 'white large error' : 'white large '"
+            [ngClass]="showErrorPassword ? 'white large error' : 'white large '"
             placeholder="Ingrese contraseña"
             formControlName="password"
           />
           <div class="form-hint error-text mt-5" 
           id="login__password-error"
-          *ngIf="getPassword.hasError('required') && getPassword.touched">
-            Password is required
+          *ngIf="showErrorPassword">
+            {{errorMessagePassword}}
           </div>
-          <div *ngIf="getPassword.hasError('minlength')">The minimun characters will be 8</div>
         </section>
         <section class="card-actions block" >
-          <button id="login__btn-login" [disabled]="loginForm.invalid">Iniciar Sesión</button>
+          <button id="login__btn-login">Iniciar Sesión</button>
         </section>
       </form>
     </div>

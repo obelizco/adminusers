@@ -5,13 +5,13 @@
 -->
 <div class="card">
   <section class="card-text">
-    <div class="layout-row justify-content-around align-items-center">
+    <div class="layout-row justify-content-around align-items-center mb-15">
       <h3 class="mt-0 mb-0">Usuarios</h3>
     </div>
     <div>
       <section class="layout-row align-items-center justify-content-center">
-        <input id="user-list__filter" type="text" class="white large outlined" placeholder="Name" [(ngModel)]="searchTerm">
-        <i class="material-icons">search</i>
+        <i class="material-icons mr-5">search</i>
+        <input id="user-list__filter" type="text" class="white large outlined mb-10" placeholder="Name" [(ngModel)]="searchTerm">
     </section>
       <div class="card w-50 mx-auto pb-30">
         <table id="user-list__table">

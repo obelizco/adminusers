@@ -12,7 +12,10 @@ import { AlertService } from '@shared/service/alert.service';
 })
 export class CreateUserComponent implements OnInit {
   newUserForm: FormGroup;
-
+  showErrorName: boolean = false;
+  showErrorJob: boolean = false;
+  errorMessageName:string = '';
+  errorMessageJob:string = '';
   constructor(
     private readonly _formBuild: FormBuilder,
     private readonly router: Router,
@@ -40,12 +43,31 @@ export class CreateUserComponent implements OnInit {
 
   create(): void {
     const payload = this.newUserForm.value as INewUser;
-    this._usersService$.createUser(payload).subscribe((res:any)=>{
-      const message = `El usuario ${payload.name} ha sido creado exitosamente` 
-      this._alertService$.showAlert({message,type:'success',isOpen:true});
-      this.redirectToListUsers();
-    });
+    this.validateName();
+    this.validateJob();
+    if(this.newUserForm.valid){
+      this._usersService$.createUser(payload).subscribe((res:any)=>{
+        const message = `El usuario ${payload.name} ha sido creado exitosamente` 
+        this._alertService$.showAlert({message,type:'success',isOpen:true});
+        this.redirectToListUsers();
+      });
+    }
   }
+
+  validateName():void {
+    if(this.getName.hasError('required')){
+      this.showErrorName = true;
+      this.errorMessageName = "Name is required"
+    }
+  }
+
+  validateJob():void {
+    if(this.getJop.hasError('required')){
+      this.showErrorJob = true;
+      this.errorMessageJob = "Job is required"
+    }
+  }
+
 
   /**
    * Este método no se puede modificar
