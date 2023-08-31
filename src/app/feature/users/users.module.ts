@@ -6,11 +6,13 @@ import { HomeUserComponent } from './home-user/home-user.component';
 import { ListUsersComponent } from './list-users/list-users.component';
 import { CreateUserComponent } from './create-user/create-user.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { FilterUserByNamePipe } from '@shared/pipes/filter-user-by-name/filter-user-by-name.pipe';
+import { SharedModule } from '@shared/shared.module';
+
+
 
 @NgModule({
-  declarations: [NavBarComponent, HomeUserComponent, ListUsersComponent, CreateUserComponent,FilterUserByNamePipe],
-  imports: [CommonModule, UsersRoutingModule,FormsModule,ReactiveFormsModule],
+  declarations: [NavBarComponent, HomeUserComponent, ListUsersComponent, CreateUserComponent],
+  imports: [CommonModule, UsersRoutingModule,FormsModule,ReactiveFormsModule,SharedModule],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class UsersModule {}

@@ -1,4 +1,4 @@
-import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { ComponentFixture, discardPeriodicTasks, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { CommonModule } from '@angular/common';
 import { LoginRoutingModule } from '@feature/login/login-routing.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';

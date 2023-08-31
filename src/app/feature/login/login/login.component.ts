@@ -3,7 +3,6 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ILogin } from '../shared/services/login/models/Login.interface';
-import { Persistence } from '@shared/service/Persistence.service';
 
 @Component({
   selector: 'app-login',
@@ -21,9 +20,11 @@ export class LoginComponent implements OnInit {
     private readonly _formBuild: FormBuilder,
     private readonly router: Router,
     private readonly _loginService$: LoginService,
-    private readonly _persistenceService$: Persistence
   ) {}
   ngOnInit(): void {
+    if(!!localStorage.getItem('token')){
+      this.redirectUsers();
+    }
     this.buildForm();
   }
 
@@ -42,17 +43,20 @@ export class LoginComponent implements OnInit {
     return this.loginForm.get('password');
   }
 
-  login(): void {
+ public async login(): Promise<void>  {
     const payload = this.loginForm.value as ILogin;
     this.validateEmail();
     this.validatePassword();
     if(this.loginForm.valid) {
-      this._loginService$.login(payload).subscribe((res:any)=>{
-        this._persistenceService$.save('token',res.token);
+      try {
+        const value = await this._loginService$.login(payload);
+        localStorage.setItem('token', value.token);
         this.redirectUsers();
-      });
+      } catch (error) {
+      }
     }
   }
+
 
   validateEmail(): void {
     if(this.getEmail.hasError("required")) {
@@ -68,7 +72,7 @@ export class LoginComponent implements OnInit {
     }
     if(this.getPassword.hasError("minlength")){
       this.showErrorPassword = true;
-      this.errorMessagePassword = 'The minimun characters will be 8';
+      this.errorMessagePassword = 'The minimum of characters will be 8';
     }
   }
 

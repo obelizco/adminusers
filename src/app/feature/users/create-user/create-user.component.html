@@ -2,6 +2,7 @@
   Recuerde conservar los id, no deben ser modificados
   ids = user-create__name, user-create__name-error, user-create__job, user-create__job-error, user-create__btn-create
 -->
+
 <div class="card">
   <section class="card-text">
     <h3 class="mt-0 mb-0 block justify-content-center flex mb-15" >Nuevo Usuario</h3>
@@ -11,31 +12,33 @@
           <input
             id="user-create__name"
             type="text"
-            [ngClass]="showErrorName ? 'white large error' : 'white large '"
+            [ngClass]="getName.hasError('required') ? 'white large error' : 'white large '"
             placeholder="Ingrese nombre"
             formControlName="name"
           />
           <div  class="form-hint error-text mt-5"  
           id="user-create__name-error" 
-          *ngIf="showErrorName">{{errorMessageName}}</div>
+          *ngIf="getName.hasError('required')">
+          Name is required
+        </div>
         </section>
         <section class="layout-column align-items-center justify-content-center  mb-10">
           <input
             id="user-create__job"
             type="text"
-            [ngClass]="showErrorJob ? 'white large error' : 'white large '"
+            [ngClass]="getJop.hasError('required') ? 'white large error' : 'white large '"
             placeholder="Ingrese el trabajo"
             formControlName="jop"
           />
           <div id="user-create__job-error" 
           class="form-hint error-text mt-5" 
-          *ngIf="showErrorJob">
-            {{errorMessageJob}}
-          </div>
-      
+          *ngIf="getJop.hasError('required')">
+          Job is required
+        </div>
+        
         </section>
         <section class="card-actions block justify-content-center" >
-          <button id="user-create__btn-create" >Crear</button>
+          <button id="user-create__btn-create" [disabled]="newUserForm.invalid">Crear</button>
         </section>
       </form>
     </div>

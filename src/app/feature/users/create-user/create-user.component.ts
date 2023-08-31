@@ -3,7 +3,8 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { UsersService } from './shared/services/users/users.service';
 import { INewUser } from '@feature/login/shared/services/login/models/NewUser.interface';
-import { AlertService } from '@shared/service/alert.service';
+import { IAlertModel } from '@feature/login/shared/services/login/models/AlertModel.interface';
+
 
 @Component({
   selector: 'app-create-user',
@@ -12,15 +13,11 @@ import { AlertService } from '@shared/service/alert.service';
 })
 export class CreateUserComponent implements OnInit {
   newUserForm: FormGroup;
-  showErrorName: boolean = false;
-  showErrorJob: boolean = false;
-  errorMessageName:string = '';
-  errorMessageJob:string = '';
+
   constructor(
     private readonly _formBuild: FormBuilder,
     private readonly router: Router,
     private readonly _usersService$: UsersService,
-    private readonly _alertService$: AlertService
   ) {}
   ngOnInit(): void {
     this.buildForm();
@@ -28,8 +25,8 @@ export class CreateUserComponent implements OnInit {
 
   buildForm(): void {
     this.newUserForm = this._formBuild.group({
-      name: [null, [Validators.required]],
-      jop: [null, [Validators.required]],
+      name: ['', [Validators.required]],
+      jop: ['', [Validators.required]],
     });
   }
 
@@ -41,32 +38,20 @@ export class CreateUserComponent implements OnInit {
     return this.newUserForm.get('jop');
   }
 
-  create(): void {
+  async create(): Promise<void> {
     const payload = this.newUserForm.value as INewUser;
-    this.validateName();
-    this.validateJob();
     if(this.newUserForm.valid){
-      this._usersService$.createUser(payload).subscribe((res:any)=>{
+      try {
+        await this._usersService$.createUser(payload);
         const message = `El usuario ${payload.name} ha sido creado exitosamente` 
-        this._alertService$.showAlert({message,type:'success',isOpen:true});
+        alert(message);
         this.redirectToListUsers();
-      });
+      } catch (error) {
+      }
     }
   }
 
-  validateName():void {
-    if(this.getName.hasError('required')){
-      this.showErrorName = true;
-      this.errorMessageName = "Name is required"
-    }
-  }
-
-  validateJob():void {
-    if(this.getJop.hasError('required')){
-      this.showErrorJob = true;
-      this.errorMessageJob = "Job is required"
-    }
-  }
+ 
 
 
   /**
