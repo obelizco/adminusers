@@ -7,16 +7,16 @@ import { IUsers } from '@feature/login/shared/services/login/models/Users.interf
 export class FilterUserByNamePipe implements PipeTransform {
 
   transform(users:IUsers[],searchTerm:string):IUsers[]{
-    if (searchTerm.length==0) {
+    if (searchTerm.length<3) {
       return users;
     }
 
     searchTerm = searchTerm.toLowerCase();
 
-    return users.filter(({first_name,last_name}: IUsers) => {
-      const userName = `${first_name} ${last_name}`;
-      return userName.toLowerCase().includes(searchTerm);
+    const filterUser = users.filter(({first_name}: IUsers) => {
+      return first_name.toLowerCase().includes(searchTerm);
     });
+    return filterUser;
   }
 
 }

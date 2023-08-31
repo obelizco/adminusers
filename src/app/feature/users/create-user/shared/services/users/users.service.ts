@@ -1,6 +1,9 @@
 import { Injectable } from '@angular/core';
-import { BaseRequestService } from '@shared/service/BaseRequest';
-
+import { environment } from '@environments/environment';
+import {
+  HttpClient,
+  HttpHeaders,
+} from '@angular/common/http';
 /**
  * El nombre de las clases o métodos no se pueden cambiar
  * */
@@ -8,20 +11,26 @@ import { BaseRequestService } from '@shared/service/BaseRequest';
   providedIn: 'root',
 })
 export class UsersService {
-
-  constructor(private readonly _baseRequest$: BaseRequestService){
+  basePatch = environment.API;
+  headers = this.httpOptions();
+  constructor(private readonly _http:HttpClient){
 
   }
   
-  getUsers(page:number) {
-    return this._baseRequest$.get(`/users?page=${page}`);
-  }
+  getUsers = (page:number):Promise<any> => this._http.get(`${this.basePatch}/users?page=${page}`,this.headers).toPromise();
+  
+  createUser = (payload:any):Promise<any> => this._http.post(`${this.basePatch}/users`,payload,this.headers).toPromise();
 
-  createUser(payload:any) {
-    return this._baseRequest$.post(`/users`,payload);
-  }
+  deleteUserForIndex=(index: number):Promise<any> => this._http.delete(`${this.basePatch}/users/${index}`,this.headers).toPromise();
+   
 
-  deleteUserForIndex(index: number) {
-    return this._baseRequest$.delete(`/users/${index}`);
+  private httpOptions(): any {
+    const headers = !!localStorage.getItem("token")
+      ? new HttpHeaders()
+          .set('Content-Type', 'application/json')
+          .set('Authorization', localStorage.getItem("token"))
+      : new HttpHeaders().set('Content-Type', 'application/json');
+
+    return { headers };
   }
 }
