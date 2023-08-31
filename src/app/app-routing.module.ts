@@ -9,7 +9,7 @@ const routes: Routes = [
     path: '',
     loadChildren: () => import('./feature/feature.module').then(i => i.FeatureModule),
   },
-  { path: '**', redirectTo: MAIN, pathMatch: 'full' },
+  { path: '**', redirectTo: 'MAIN', pathMatch: 'full' },
 ];
 
 @NgModule({

@@ -2,3 +2,38 @@
   Recuerde conservar los id, no deben ser modificados
   ids = user-create__name, user-create__name-error, user-create__job, user-create__job-error, user-create__btn-create
 -->
+<div class="card">
+  <section class="card-text">
+    <h3 class="mt-0 mb-0 block" >Nuevo Usuario</h3>
+    <div class="layout-row justify-content-around align-items-center">
+      <form [formGroup]="newUserForm" (submit)="create()">
+        <section class="layout-row align-items-center justify-content-center">
+          <input
+            id="user-create__name"
+            type="text"
+            class="white large"
+            placeholder="Ingrese nombre"
+            formControlName="name"
+          />
+          <div id="user-create__name-error" *ngIf="getName.hasError('required') && getName.touched">Name is required</div>
+        </section>
+        <section class="layout-row align-items-center justify-content-center">
+          <input
+            id="user-create__job"
+            type="text"
+            class="white large"
+            placeholder="Ingrese el trabajo"
+            formControlName="jop"
+          />
+          <div id="user-create__job-error" *ngIf="getJop.hasError('required') && getJop.touched">
+            job is required
+          </div>
+      
+        </section>
+        <section class="card-actions block" >
+          <button id="user-create__btn-create" [disabled]="newUserForm.invalid">Crear</button>
+        </section>
+      </form>
+    </div>
+  </section>
+</div>
