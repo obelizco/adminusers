@@ -4,9 +4,7 @@ import { FilterUserByNamePipe } from '@shared/pipes/filter-user-by-name/filter-u
 
 
 @NgModule({
-    imports:[CommonModule],
-    exports: [FilterUserByNamePipe],
-    declarations:[FilterUserByNamePipe]
+
 })
 export class SharedModule {
 }

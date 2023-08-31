@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { IAlertModel } from '@feature/login/shared/services/login/models/AlertModel.interface';
+import { AlertService } from '@shared/service/alert.service';
 
 @Component({
   selector: 'app-nav-bar',
@@ -9,12 +10,17 @@ import { IAlertModel } from '@feature/login/shared/services/login/models/AlertMo
 })
 export class NavBarComponent implements OnInit {
   showAlert: IAlertModel = { message: '', type: 'error', isOpen: false };
-  constructor(private readonly router: Router) {}
+  constructor(private readonly router: Router, public readonly _alertService$: AlertService) {}
 
   ngOnInit(): void {
+    this.showAlertSubscribe();
   }
 
-
+  showAlertSubscribe(): void {
+    this._alertService$.showAlert$.subscribe((alert: IAlertModel) => {
+      this.showAlert = alert;
+    });
+  }
 
   navigateTo(route: string): void {
     this.router.navigateByUrl(`users${route}`);

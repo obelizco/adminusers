@@ -1,4 +1,4 @@
-import { ComponentFixture, discardPeriodicTasks, fakeAsync, flush, TestBed, tick } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SELECTORS } from '../shared/util/selectors';
@@ -98,11 +98,11 @@ describe('Create User', () => {
     btn.click();
     tick(1000);
 
+
     expect(btn.disabled).toBeFalse();
     expect(inputNameError).toBeNull();
     expect(inputJobError).toBeNull();
     expect(spyRedirection).toHaveBeenCalled();
-
   }));
 
 });
