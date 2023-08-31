@@ -3,9 +3,9 @@ import { UsersService } from '../create-user/shared/services/users/users.service
 import {
     IUsers,
   IPaginator,
-  IResponse,
 } from '@feature/login/shared/services/login/models/Users.interface';
-
+import { map } from 'rxjs/operators';
+import { AlertService } from '@shared/service/alert.service';
 
 @Component({
   selector: 'list-users',
@@ -17,28 +17,35 @@ export class ListUsersComponent implements OnInit {
   users: IUsers[];
   searchTerm = '';
 
-  constructor(public _usersService$: UsersService) {}
-  async ngOnInit() {
-    await this.getUsers();
+  constructor(private readonly _usersService$: UsersService,
+              private readonly _alertService$: AlertService) {}
+  ngOnInit() {
+    this.getUsers();
   }
 
- async getUsers(): Promise<void> {
-    try {
-      const value = await this._usersService$.getUsers(1) as IResponse;
-      const {data} = value;
-      this.users = data;
-    } catch (error) {
-    }
-
+  getUsers(): void {
+    this._usersService$
+      .getUsers(1)
+      .pipe(
+        map((value) => {
+          this.paginator = {
+            page: value.page,
+            per_page: value.per_page,
+            total: value.total,
+            total_pages: value.total_pages,
+          };
+          return value.data;
+        }),
+      )
+      .subscribe((res) => (this.users = res));
   }
 
-   async deteleUser({id,first_name}: IUsers): Promise<void> {
-    try {
-      await this._usersService$.deleteUserForIndex(id) as any;
+  deteleUser({id,first_name}: IUsers): void {
+    this._usersService$.deleteUserForIndex(id).subscribe(() =>{
       const message = `El usuario ${first_name} ha sido eliminado correctamente`;
+      this._alertService$.showAlert({message,type:'success',isOpen:true});
       this.users = this.users.filter(users => users.id !== id);
-      alert(message)
-    } catch (error) {
-    } 
+      // this.getUsers(); Recupera información nuevamente de la api para actualizar la lista de usuarios
+    })
   }
 }
