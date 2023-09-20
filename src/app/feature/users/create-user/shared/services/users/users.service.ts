@@ -30,7 +30,6 @@ export class UsersService {
           .set('Content-Type', 'application/json')
           .set('Authorization', localStorage.getItem("token"))
       : new HttpHeaders().set('Content-Type', 'application/json');
-
     return { headers };
   }
 }
